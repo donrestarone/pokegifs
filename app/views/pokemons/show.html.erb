@@ -3,3 +3,6 @@
 
 
 <%= @pokemon %>
+<% @gif.each do |gif| %>
+<%= image_tag(gif) %>
+<% end %>

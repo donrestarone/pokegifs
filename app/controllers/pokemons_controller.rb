@@ -24,7 +24,10 @@ class PokemonsController < ApplicationController
   	giphy_response = HTTParty.get("https://api.giphy.com/v1/gifs/search?api_key=#{key}&q=#{@pokemon_name}")
   	giphy_parsed_response = JSON.parse(giphy_response.body)
   	#p giphy_parsed_response.keys
-  	p giphy_parsed_response["data"]
+  	giphy_data = giphy_parsed_response["data"]
+
+  	@gif = find_gif(giphy_data)
+
   	respond_to do |format|
   		format.html {render :show}
   		format.json {
@@ -36,9 +39,13 @@ class PokemonsController < ApplicationController
   private 
 
   def find_gif(giphy_response)
-  	
-
+  	gif_array = []
+  	giphy_response.each do |array_index|
+  		gif_array.push array_index["images"]["fixed_height"]["url"]
+  		return gif_array
+  	end
   end
+
   def find_pokemon(attribute, pokemons)
 
 	  	if attribute.to_i != 0 
