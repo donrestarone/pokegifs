@@ -31,7 +31,7 @@ class PokemonsController < ApplicationController
   	respond_to do |format|
   		format.html {render :show}
   		format.json {
-  			render json: {pokemons: @pokemons}
+  			render json: {pokemon: @pokemon, gif: @gif}
   		}
   	end
   end
