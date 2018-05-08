@@ -12,26 +12,26 @@ class PokemonsController < ApplicationController
   	key = ENV['GIPHY_KEY']
   	
   	#p parsed_response.keys
-  	@pokemons = parsed_response['pokemon']
+  	@pokemons = parsed_response['pokemon']	#gives all the pokemons 
   	
-  	@pokemon_id = params[:id]
+  	@pokemon_id = params[:id]	#gets pokemon name or id from the params hash
 
   	
   	if @pokemon_id
-  		@pokemon = find_pokemon(@pokemon_id, @pokemons)
-  		@pokemon_name = @pokemon["name"]
+  		@pokemon = find_pokemon(@pokemon_id, @pokemons)	#passes the info from params and all pokemons to find pokemon method
+  		@pokemon_name = @pokemon["name"]	#finds the name of pokemon by looking inside the json response under the key 'name'
   	end
   	giphy_response = HTTParty.get("https://api.giphy.com/v1/gifs/search?api_key=#{key}&q=#{@pokemon_name}")
   	giphy_parsed_response = JSON.parse(giphy_response.body)
   	#p giphy_parsed_response.keys
-  	giphy_data = giphy_parsed_response["data"]
+  	giphy_data = giphy_parsed_response["data"]	#this gives all the info on a search query
 
-  	@gif = find_gif(giphy_data)
+  	@gif = find_gif(giphy_data)	#gives a single gif when find_gif method is passed the giphy api response
 
   	respond_to do |format|
   		format.html {render :show}
   		format.json {
-  			render json: {pokemon: @pokemon, gif: @gif}
+  			render json: {pokemon: @pokemon, gif: @gif}	#this is the gateway for sending the api response
   		}
   	end
   end
